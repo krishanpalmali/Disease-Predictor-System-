@@ -3,7 +3,7 @@ from pydantic import BaseModel
 import joblib
 import numpy as np
 from fastapi.middleware.cors import CORSMiddleware
-
+import os
 app = FastAPI()
 
 # CORS for frontend
@@ -15,18 +15,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_DIR = os.path.join(BASE_DIR, "models")
+
+diabetes_model = joblib.load(os.path.join(MODEL_DIR, "diabetes_model.joblib"))
+diabetes_scaler = joblib.load(os.path.join(MODEL_DIR, "diabetes_scaler.joblib"))
+heart_model = joblib.load(os.path.join(MODEL_DIR, "heart_model.joblib"))
+heart_scaler = joblib.load(os.path.join(MODEL_DIR, "heart_scaler.joblib"))
 # Load models
-diabetes_model = joblib.load("backend/models/diabetes_model.joblib")
-diabetes_scaler = joblib.load("backend/models/diabetes_scaler.joblib")
-heart_model = joblib.load("backend/models/heart_model.joblib")
-heart_scaler = joblib.load("backend/models/heart_scaler.joblib")
+# diabetes_model = joblib.load("models/diabetes_model.joblib")
+# diabetes_scaler = joblib.load("models/diabetes_scaler.joblib")
+# heart_model = joblib.load("models/heart_model.joblib")
+# heart_scaler = joblib.load("models/heart_scaler.joblib")
 
 
 class DiabetesInput(BaseModel):
     Glucose: float
     BloodPressure: float
-    SkinThickness: float
-    Insulin: float
     BMI: float
     DiabetesPedigreeFunction: float
     Age: float
@@ -47,9 +52,7 @@ def home():
 
 @app.post("/predict-diabetes")
 def predict_diabetes(data: DiabetesInput):
-    arr = np.array([[data.Glucose, data.BloodPressure,
-                     data.SkinThickness, data.Insulin, data.BMI,
-                     data.DiabetesPedigreeFunction, data.Age]])
+    arr = np.array([[data.Glucose, data.BloodPressure, data.BMI,data.DiabetesPedigreeFunction, data.Age]])
 
     arr_scaled = diabetes_scaler.transform(arr)
     prob = diabetes_model.predict_proba(arr_scaled)[0][1] * 100
