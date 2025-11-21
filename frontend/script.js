@@ -145,28 +145,30 @@ function evaluateAndShow(){
     showMedicines(false);
   }
 
-  // If your friend provides backend, you can POST data here:
-  // Uncomment and change URL if backend ready.
-  /*
-  fetch('http://localhost:5000/predict', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
+  
+  fetch("http://localhost:8000/predict-diabetes", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      Pregnancies: 0,
-      Glucose: userData.glucose,
-      BloodPressure: 70,
-      SkinThickness: 20,
-      Insulin: 80,
-      BMI: userData.bmi,
-      DiabetesPedigreeFunction: 0.5,
-      Age: userData.age
+        Glucose: userData.glucose,
+        BloodPressure: 70,
+        SkinThickness: 20,
+        Insulin: 80,
+        BMI: userData.bmi,
+        DiabetesPedigreeFunction: 0.5,
+        Age: userData.age
     })
-  }).then(r=>r.json()).then(res=>{
-    addMessage('bot', 'Backend result: ' + (res.result || JSON.stringify(res)));
-  }).catch(e=>{
-    console.warn('Backend error', e);
-  });
-  */
+})
+.then(res => res.json())
+.then(data => {
+    addMessage("bot", "📊 Backend ML Prediction: " + data.risk.toFixed(2) + "%");
+})
+.catch(err => {
+    addMessage("bot", "❌ Backend error: " + err);
+});
+
+
+  
 }
 
 function showMedicines(isHighRisk){

@@ -43,7 +43,7 @@ model = CalibratedClassifierCV(rf, cv=5)
 model.fit(X_train,Y_train)
 pred=model.predict(X_test)
 acc=accuracy_score(pred,Y_test)
-print(f'Model accuracy for heart Disease: {acc*100:.2f}')
+print(f'Model accuracy for heart Disease: {acc*100:.2f}%')
 
 print("enter values for checking heart health: ")
 age=float(input('enter AGE: '))

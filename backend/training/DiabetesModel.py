@@ -10,6 +10,13 @@ from sklearn.preprocessing import StandardScaler
 #accessing data 
 data = pd.read_csv("backend/training/diabetes.csv")
 
+data.loc[
+    (data['Glucose'] > 180) &
+    (data['BloodPressure'] > 110) &
+    (data['BMI'] > 40) &
+    (data['DiabetesPedigreeFunction'] > 1.1),
+    'Outcome'
+] = 1
 
 
 X=data[['Glucose','BloodPressure','BMI','DiabetesPedigreeFunction','Age']]
