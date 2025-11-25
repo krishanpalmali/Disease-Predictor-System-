@@ -57,7 +57,21 @@ def predict_diabetes(data: DiabetesInput):
     arr_scaled = diabetes_scaler.transform(arr)
     prob = diabetes_model.predict_proba(arr_scaled)[0][1] * 100
 
-    return {"risk": prob}
+    if prob ==0:
+        severity= "Healthy person, no signs of diabetes."
+    elif prob < 10:
+        severity = "Very low risk, no need to worry."
+    elif prob < 35:
+        severity = "Early borderline signs but not dangerous."
+    elif prob < 60:
+        severity = "Moderate risk, chances are increasing."
+    elif prob < 80:
+        severity = "High chance of diabetes."
+    else:
+        severity = "⚠️ Critical Risk! Immediate medical consultation recommended."
+
+    return {"risk": prob,
+            "severity":severity}
 
 
 @app.post("/predict-heart")
@@ -68,4 +82,15 @@ def predict_heart(data: HeartInput):
     arr_scaled = heart_scaler.transform(arr)
     prob = heart_model.predict_proba(arr_scaled)[0][1] * 100
 
-    return {"risk": prob}
+    if prob == 0:
+        severity = "Healthy heart, no worries ❤️"
+    elif prob < 15:
+        severity = "No worries, very low risk."
+    elif prob < 50:
+        severity = "Moderate risk, borderline... Take care of yourself."
+    elif prob < 70:
+        severity = "High risk of heart disease."
+    else:
+        severity = "⚠️ Very high risk of heart disease!"
+    return {"risk": prob,
+            "severity":severity}

@@ -78,7 +78,6 @@ function handleUserInput(msg) {
 
         /* ---------------------- COMMON QUESTIONS ---------------------- */
 
-        // Step 0 → Ask for name
         case 0:
             userInfo.name = msg;
             addMessage("bot", `Hello ${msg}! 👋`);
@@ -86,7 +85,6 @@ function handleUserInput(msg) {
             step = 1;
             break;
 
-        // Step 1 → Ask for age
         case 1:
             userInfo.age = Number(msg);
 
@@ -209,14 +207,15 @@ function runDiabetesPrediction() {
         body: JSON.stringify(payload)
     })
     .then(res => res.json())
-    .then(data => addMessage("bot", `📊 Diabetes Risk: ${data.risk.toFixed(2)}%`))
+    .then(data => {addMessage("bot", `📊 Diabetes Risk: ${data.risk.toFixed(2)}%`);
+                addMessage("bot",`ℹ️ ${data.severity}`);})
     .catch(err => addMessage("bot", "Backend error: " + err));
 }
 
 function runHeartPrediction() {
     const payload = {
         age: userInfo.age,
-        sex: 1,  // you can add question later
+        sex: 1,
         cp: userInfo.cp,
         trestbps: userInfo.trestbps,
         chol: userInfo.chol,
@@ -230,7 +229,11 @@ function runHeartPrediction() {
         body: JSON.stringify(payload)
     })
     .then(res => res.json())
-    .then(data => addMessage("bot", `❤️ Heart Disease Risk: ${data.risk.toFixed(2)}%`))
+    .then(data => {
+    addMessage("bot", `❤️ Heart Disease Risk: ${data.risk.toFixed(2)}%`);
+    addMessage("bot", `ℹ️ ${data.severity}`);
+})
+
     .catch(err => addMessage("bot", "Backend error: " + err));
 }
 

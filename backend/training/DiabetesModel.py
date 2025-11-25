@@ -69,7 +69,7 @@ else:
 
 risk = probability_percentage  
 
-if risk == 0.0:
+if risk < 10.0:
     severity = 'Healthy person, no signs of diabetes.'
 elif risk < 0.35:
     severity = "Early borderline signs but not dangerous."
