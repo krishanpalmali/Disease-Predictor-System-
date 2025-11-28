@@ -22,18 +22,15 @@ data.loc[
 X=data[['Glucose','BloodPressure','BMI','DiabetesPedigreeFunction','Age']]
 y=data['Outcome']
 
-
 #scalar transform
 scalar=StandardScaler()
 X_scaled=scalar.fit_transform(X)
 
 #train model and fit features inside model 
-X_train,X_test,Y_train,Y_test=train_test_split(X_scaled,y, test_size=0.5, random_state=60)
+X_train,X_test,Y_train,Y_test=train_test_split(X_scaled,y, test_size=0.3, random_state=60)
 rf=RandomForestClassifier()
 model = CalibratedClassifierCV(rf, cv=5)
 model.fit(X_train,Y_train)
-
- 
 
 #predicting model accuracy 
 predict=model.predict(X_test)
