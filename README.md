@@ -1,4 +1,4 @@
-# 🩺 Diabetes & Heart Disease Prediction System
+# 🩺  Disease Prediction System
 
 A web-based health prediction system that predicts the **risk of Diabetes and Heart Disease** using user health data.  
 The project combines **Frontend (HTML, CSS, JavaScript)** and **Backend (Python + ML Libraries)** to deliver accurate health predictions.
