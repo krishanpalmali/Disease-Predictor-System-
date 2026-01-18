@@ -46,5 +46,41 @@ Users enter basic health details through a web interface, and the system predict
 
 ---
 
-## 📂 Project Structure
+## Confusion metrics, Accuracy Score and Classification Report 
+
+-- Heart Disease Model's 
+Model accuracy for heart Disease: 81.97%
+
+Confusion metrics -- 
+[[24  9]
+ [ 2 26]]
+
+ Classsification Report ---
+                 precision    recall  f1-score   support
+
+           0       0.92      0.73      0.81        33
+           1       0.74      0.93      0.83        28
+
+    accuracy                           0.82        61
+   macro avg       0.83      0.83      0.82        61
+weighted avg       0.84      0.82      0.82        61
+
+
+
+-- Diabetes Model's 
+Accuracy of this model : 78.79
+Classification Report --
+               precision    recall  f1-score   support
+
+           0       0.84      0.82      0.83       147
+           1       0.70      0.73      0.71        84
+
+    accuracy                           0.79       231
+   macro avg       0.77      0.77      0.77       231
+weighted avg       0.79      0.79      0.79       231
+
+
+Confusion matrix --
+ [[121  26]
+ [ 23  61]]
 
