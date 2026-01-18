@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 from sklearn.calibration import CalibratedClassifierCV
 import joblib
 
@@ -32,18 +32,24 @@ X_scaler=scalar.fit_transform(X)
 X_train,X_test,Y_train,Y_test=train_test_split(X_scaler,y,test_size=0.2,random_state=60)
 
 
-rf=RandomForestClassifier(n_estimators=250,
-    max_depth=10,
-    min_samples_split=5,
-    min_samples_leaf=7,
+rf=RandomForestClassifier(n_estimators=300, max_features='sqrt',
+    min_samples_split=2,
+    min_samples_leaf=2,
     random_state=57
 )
 model = CalibratedClassifierCV(rf, cv=5)
 
 model.fit(X_train,Y_train)
-pred=model.predict(X_test)
+
+proba=model.predict_proba(X_test)[:,1]
+thershold=0.44
+pred=(proba>=thershold).astype(int)
+
 acc=accuracy_score(pred,Y_test)
 print(f'Model accuracy for heart Disease: {acc*100:.2f}%')
+print(confusion_matrix(Y_test,pred))
+print(classification_report(Y_test,pred))
+
 
 print("enter values for checking heart health: ")
 age=float(input('enter AGE: '))
@@ -63,6 +69,7 @@ input_pred=model.predict(input_scaled)[0]
 probability=model.predict_proba(input_scaled)[0][1]
 print(f'You have {probability*100:.2f} % chances of heart Desease, ')
 probability=probability*100
+
 if probability==0.0:
     print("Healthy heart, no worries")
 elif probability<15.0 :
