@@ -16,8 +16,8 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    addMessage("bot", "Namaste! Aap kaun sa prediction chahte hain? ❤️ Heart ya 🍬 Diabetes?");
-    step = -1;
+    // addMessage("bot", "Namaste! Aap kaun sa prediction chahte hain? ❤️ Heart ya 🍬 Diabetes?");
+    // step = -1;
 
     sendBtn.addEventListener('click', sendMessage);
     input.addEventListener('keypress', (e) => {
@@ -29,6 +29,10 @@ window.addEventListener('DOMContentLoaded', () => {
         step = 0;
         addMessage("bot", "Namaste! Aapka naam kya hai?");
     });
+
+    
+    addMessage("bot", "Namaste! Aap kaun sa prediction chahte hain? ❤️ Heart ya 🍬 Diabetes?");
+    step = -1;
 });
 
 function addMessage(type, text) {
@@ -193,6 +197,11 @@ function handleUserInput(msg) {
 }
 
 
+
+
+
+
+
 function runDiabetesPrediction() {
     const payload = {
     Glucose: userInfo.glucose,
@@ -236,4 +245,6 @@ function runHeartPrediction() {
 
     .catch(err => addMessage("bot", "Backend error: " + err));
 }
+
+
 

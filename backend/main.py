@@ -15,6 +15,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_DIR = os.path.join(BASE_DIR, "models")
 
@@ -22,11 +25,7 @@ diabetes_model = joblib.load(os.path.join(MODEL_DIR, "diabetes_model.joblib"))
 diabetes_scaler = joblib.load(os.path.join(MODEL_DIR, "diabetes_scaler.joblib"))
 heart_model = joblib.load(os.path.join(MODEL_DIR, "heart_model.joblib"))
 heart_scaler = joblib.load(os.path.join(MODEL_DIR, "heart_scaler.joblib"))
-# Load models
-# diabetes_model = joblib.load("models/diabetes_model.joblib")
-# diabetes_scaler = joblib.load("models/diabetes_scaler.joblib")
-# heart_model = joblib.load("models/heart_model.joblib")
-# heart_scaler = joblib.load("models/heart_scaler.joblib")
+
 
 
 class DiabetesInput(BaseModel):
@@ -83,14 +82,14 @@ def predict_heart(data: HeartInput):
     prob = heart_model.predict_proba(arr_scaled)[0][1] * 100
 
     if prob == 0:
-        severity = "Healthy heart, no worries ❤️"
+        severity = "Healthy heart, no worries ❤️ you are safe."
     elif prob < 15:
-        severity = "No worries, very low risk."
+        severity = "No worries, very low risk. you are safe.r😊"
     elif prob < 50:
-        severity = "Moderate risk, borderline... Take care of yourself."
+        severity = "Moderate risk, borderline... Take care of yourself.⚠️ Contect a doctor if necessary."
     elif prob < 70:
         severity = "High risk of heart disease."
     else:
-        severity = "⚠️ Very high risk of heart disease!"
+        severity = "⚠️ Very high risk of heart disease! Immediate medical consultation recommended."
     return {"risk": prob,
             "severity":severity}
