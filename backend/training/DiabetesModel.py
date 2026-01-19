@@ -1,9 +1,9 @@
 
 #import libraries 
 import pandas as pd
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split,GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 import joblib
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.preprocessing import StandardScaler
@@ -28,14 +28,25 @@ X_scaled=scalar.fit_transform(X)
 
 #train model and fit features inside model 
 X_train,X_test,Y_train,Y_test=train_test_split(X_scaled,y, test_size=0.3, random_state=60)
-rf=RandomForestClassifier()
+rf=RandomForestClassifier(random_state=42, class_weight='balanced', max_depth= 10, max_features= 'sqrt', min_samples_leaf= 2, min_samples_split= 5, n_estimators= 300)
+
+
 model = CalibratedClassifierCV(rf, cv=5)
 model.fit(X_train,Y_train)
+THRESHOLD = 0.44
 
-#predicting model accuracy 
-predict=model.predict(X_test)
-accuracy=accuracy_score(Y_test,predict)
+y_probs = model.predict_proba(X_test)[:, 1]
+y_pred = (y_probs >= THRESHOLD).astype(int)
+
+
+
+# #predicting model accuracy 
+
+accuracy=accuracy_score(Y_test,y_pred)
 print(f'Accuracy of this model : {accuracy*100:.2f}')
+print('Classification Report -- \n',classification_report(Y_test,y_pred))
+print('\nConfusion matrix -- \n',confusion_matrix(Y_test,y_pred))
+
 
 #taking user input for diabetes checking
 print('Enter given Details below : ')
@@ -83,4 +94,3 @@ print(f"Severity Level: {severity}")
 
 joblib.dump(model, "backend/models/diabetes_model.joblib")
 joblib.dump(scalar, "backend/models/diabetes_scaler.joblib")
-
