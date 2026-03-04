@@ -84,3 +84,6 @@ Confusion matrix --
  [[121  26]
  [ 23  61]]
 
+
+
+** This is a college minor project**
